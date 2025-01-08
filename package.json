@@ -5,7 +5,7 @@
   "scripts": {
     "start":"node dist/server.js",
     "dev":"tsnd --respawn src/server.ts",
-    "build": "npx tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

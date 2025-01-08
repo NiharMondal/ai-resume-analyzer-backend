@@ -11,7 +11,7 @@ async function main() {
 
 		server = app.listen(envConfig.port, () => {
 			console.log(
-				`\nApp is listening on port ${envConfig.port} \nMongoDB connected successfully`
+				`\nApp is listening on port ${envConfig.port} \nMongoDB connected`
 			);
 		});
 	} catch (err) {

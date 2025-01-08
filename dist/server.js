@@ -12,18 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = __importDefault(require("./config"));
 const app_1 = __importDefault(require("./app"));
-const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const server = yield mongoose_1.default.connect(config_1.default.mongo_uri);
-        app_1.default.listen(config_1.default.port, () => {
-            console.log("Connected to server", server.connection.host);
-        });
-    }
-    catch (error) {
-        console.log(error);
-    }
-});
+const mongoose_1 = __importDefault(require("mongoose"));
+const config_1 = require("./config");
+let server;
+function main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield mongoose_1.default.connect(config_1.envConfig.mongo_uri);
+            server = app_1.default.listen(config_1.envConfig.port, () => {
+                console.log(`\nApp is listening on port ${config_1.envConfig.port} \nMongoDB connected successfully`);
+            });
+        }
+        catch (err) {
+            console.log(err);
+        }
+    });
+}
 main();
