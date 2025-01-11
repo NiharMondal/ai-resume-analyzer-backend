@@ -7,6 +7,12 @@ type TResponse<T> = {
 	meta?: {};
 };
 
+/**
+ *
+ * @param res Response
+ * @param data Is a object that contains statusCode:number, message:string, result: Generic data, meta: is optional contains objects
+ */
+
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
 	res.status(data.statusCode).json({
 		success: true,
