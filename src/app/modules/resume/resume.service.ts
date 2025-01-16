@@ -1,7 +1,8 @@
-import { readFile } from "fs";
+import { readFile, unlink } from "fs";
 import CustomError from "../../../utils/CustomError";
-import pdfParse, { Result } from "pdf-parse";
+import pdfParse from "pdf-parse";
 import { analyzeResume } from "../../../helpers/analyzeResume";
+import { analyzeWithOpenAI } from "../../../helpers/analyzeWithOpenAi";
 const createIntoDB = async (file: any) => {
 	if (file.mimetype === "application/pdf") {
 		readFile(file.path, async (error, data) => {
@@ -11,8 +12,11 @@ const createIntoDB = async (file: any) => {
 
 			const { text } = await pdfParse(data);
 
-			const result = analyzeResume(text);
+			const result = analyzeWithOpenAI(text);
 			console.log(result);
+			unlink(file.path, (err) => {
+				console.log(err);
+			});
 		});
 	}
 };
