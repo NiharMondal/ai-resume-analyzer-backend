@@ -1,13 +1,23 @@
-export const analyzeResume = (text: string) => {
-	const keywords = ["React", "Node.js", "Teamwork", "JavaScript", "CSS"];
-	let score = 0;
+import { model } from "../lib/geminiApiConfig";
+import CustomError from "../utils/CustomError";
 
-	keywords.forEach((keyword) => {
-		if (text.includes(keyword)) score += 10; // Assign points per keyword
-	});
+export const analyzeResume = async (resumeText: string) => {
+	try {
+		const prompt = `
+You are a professional resume analyzer. Analyze the following resume content and provide detailed feedback, including:
+1. Overall score out of 100.
+2. Strengths of the resume.
+3. Weaknesses or areas to improve.
+4. Additional tips for improvement.
 
-	// Add more criteria (e.g., length of resume, proper formatting)
-	const feedback = score >= 70 ? "Great resume!" : "Needs improvement";
+Resume content:
+${resumeText}`;
+		const result = await model.generateContent(prompt);
 
-	return { score, feedback };
+		const data = result.response.text();
+		return data;
+	} catch (error) {
+		console.log(error);
+		throw new CustomError(400, "Error occured at analyze resume function!");
+	}
 };

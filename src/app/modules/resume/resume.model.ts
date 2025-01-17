@@ -8,5 +8,4 @@ const resumeSchema = new Schema<IResume>({
 	},
 });
 
-const Resume = model("Resume", resumeSchema);
-export default Resume;
+export const Resume = model("Resume", resumeSchema);
