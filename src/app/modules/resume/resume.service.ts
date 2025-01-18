@@ -1,23 +1,20 @@
-import { readFile, unlink } from "fs";
-import CustomError from "../../../utils/CustomError";
+import { readFileSync, unlinkSync } from "fs";
+
 import pdfParse from "pdf-parse";
 import { analyzeResume } from "../../../helpers/analyzeResume";
-import { analyzeWithOpenAI } from "../../../helpers/analyzeWithOpenAi";
+
 const createIntoDB = async (file: any) => {
 	if (file.mimetype === "application/pdf") {
-		readFile(file.path, async (error, data) => {
-			if (error) {
-				throw new CustomError(404, "Something went wrong!");
-			}
-
-			const { text } = await pdfParse(data);
-
-			const result = analyzeWithOpenAI(text);
-			console.log(result);
-			unlink(file.path, (err) => {
-				console.log(err);
-			});
-		});
+		const buffer = readFileSync(file.path);
+		const data = await pdfParse(buffer);
+		unlinkSync(file.path);
+		const result = await analyzeResume(data.text);
+		return result;
+	} else {
+		const text = readFileSync(file.path, "utf-8");
+		unlinkSync(file.path);
+		const result = await analyzeResume(text);
+		return result;
 	}
 };
 

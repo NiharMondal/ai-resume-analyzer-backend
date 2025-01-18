@@ -1,4 +1,5 @@
-import openai from "../lib/openAiConfig";
+import { client } from "../lib/openAiConfig";
+import CustomError from "../utils/CustomError";
 
 export const analyzeWithOpenAI = async (resumeText: string) => {
 	try {
@@ -12,9 +13,12 @@ You are a professional resume analyzer. Analyze the following resume content and
 Resume content:
 ${resumeText}`;
 
-		const response = await openai.chat.completions.create({
-			model: "gpt-4o", // You can also use GPT-4 if available
-			messages: [{ role: "user", content: prompt, name: "hello" }],
+		const response = await client.chat.completions.create({
+			model: "o1-preview-2024-09-12", // You can also use GPT-4 if available
+
+			max_tokens: 500, // Adjust token limit based on your use case
+			temperature: 0.7, // Adjust creativity level
+			messages: [{ content: prompt, role: "developer" }],
 		});
 
 		// Extract and return feedback from OpenAI response
@@ -23,6 +27,6 @@ ${resumeText}`;
 		};
 	} catch (error) {
 		console.error("Error in OpenAI API:", error);
-		throw new Error("Error while processing resume with OpenAI");
+		throw new CustomError(500, "Error in OpenAI API");
 	}
 };
