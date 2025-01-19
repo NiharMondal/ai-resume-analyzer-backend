@@ -1,4 +1,4 @@
-import { model } from "../lib/geminiApiConfig";
+import { model } from "../app/modules/lib/geminiApiConfig";
 import CustomError from "../utils/CustomError";
 
 export const analyzeResume = async (resumeText: string) => {

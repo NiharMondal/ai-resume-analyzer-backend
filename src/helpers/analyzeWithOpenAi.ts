@@ -1,4 +1,4 @@
-import { client } from "../lib/openAiConfig";
+import { client } from "../app/modules/lib/openAiConfig";
 import CustomError from "../utils/CustomError";
 
 export const analyzeWithOpenAI = async (resumeText: string) => {
